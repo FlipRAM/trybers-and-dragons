@@ -12,13 +12,12 @@ export default class PVE extends Battle {
   }
 
   fight(): number {
-    const monstersStatus = this._monsters.map((monster) => {
-      this._characterFighter.attack(monster);
-      monster.attack(this._characterFighter);
-      if (super.fight() === -1) return 1;
-      return -1;
+    this._monsters.forEach((monster) => {
+      do {
+        this._characterFighter.attack(monster);
+        monster.attack(this._characterFighter);
+      } while (this._characterFighter.lifePoints > 0 && monster.lifePoints > 0);
     });
-    if (monstersStatus.every((monster) => monster === -1)) { return 1; }
-    return -1;
+    return super.fight();
   }
 }
